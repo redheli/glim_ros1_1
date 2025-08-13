@@ -12,7 +12,9 @@ endif()
 option(BUILD_WITH_CUDA "Build with GPU support" ON)
 option(BUILD_WITH_VIEWER "Build with visualizer" ON)
 
-find_package(catkin REQUIRED COMPONENTS cv_bridge image_transport tf2_ros roslib rosbag sensor_msgs)
+find_package(catkin REQUIRED COMPONENTS cv_bridge image_transport tf2_ros roslib rosbag sensor_msgs livox_ros_driver2)
+
+add_compile_definitions(LIVOX_ROS_DRIVER2)
 
 find_package(glim REQUIRED)
 find_package(Eigen3 REQUIRED)
@@ -29,7 +31,10 @@ catkin_package(
 #  CATKIN_DEPENDS glim
 #  DEPENDS glim
 )
-
+find_package(PCL 1.8 REQUIRED)
+add_executable(custom_msg_to_pc2 src/customMsgToPC2.cpp)
+target_link_libraries(custom_msg_to_pc2 ${catkin_LIBRARIES} ${PCL_LIBRARIES} ${PYTHON_LIBRARIES})
+target_include_directories(custom_msg_to_pc2 PRIVATE  ${catkin_INCLUDE_DIRS} ${PYTHON_INCLUDE_DIRS} ${PCL_INCLUDE_DIRS})
 ###########
 ## Build ##
 ###########
